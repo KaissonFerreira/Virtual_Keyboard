@@ -7,19 +7,31 @@ cap.set(4, 720)
 
 detector = HandDetector(detectionCon=0.8)
 
+keys = [["Q",'E','R','T','Y','U','I','O','P','-'],
+        ['A','S','D','F','G','H','J','K','L','/'],
+        ['Z','X','C','V','B','N','M',',','.',';']]
+
+
+def drawALL (img, buttonList):
+    for button in buttonList:
+        x, y = button.position
+        w, h = button.size
+        cv2.rectangle(img, button.position, (x + w, y + h), (250,30,15), cv2.FILLED) # Rectangle
+        cv2.putText(img, button.text, (x+10,y+30), 
+        cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255), 2)
+    return img
+
+
 class Button():
-    def __init__(self, position, text, size=[100,100]):
+    def __init__(self, position, text, size=[45,45]):
         self.position = position
         self.size = size
         self.text = text
-    def draw(self, img):
-        cv2.rectangle(img, self.position, self.size, (250,30,15), cv2.FILLED)
-        cv2.putText(img, self.text, (self.position[0]+25,self.position[1]+25), 
-        cv2.FONT_HERSHEY_PLAIN, 5,(255,255,255), 3)
-        return img
 
-
-mybutton = Button([100,100], "Q")
+buttonList = []
+for i in range(len(keys)):
+    for j,key in enumerate(keys[i]):
+        buttonList.append(Button([50*j+75,50*i+60], key)) # Movimentation
 
 while True:
     success, img = cap.read()
@@ -37,10 +49,7 @@ while True:
         bbox2 = hand2["bbox"] # Bouding Box Info x,y,w,h
         centerpoint2 = hand2['center'] # center of the hand cx,cy
         handType2 = hand2["type"]# Hand type left or right
-    
-    mybutton.draw(img)
+    img = drawALL(img, buttonList)
 
-   # cv2.rectangle(img, (100,100), (200,200), (250,30,15), cv2.FILLED)
-    #cv2.putText(img, "Q", (115,170), cv2.FONT_HERSHEY_PLAIN,5,(255,255,255), 3)
     cv2.imshow("Image", img)
     cv2.waitKey(1)
