@@ -57,15 +57,14 @@ while True:
                     cv2.putText(img, button.text, (x+10,y+30), 
                                 cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255), 2)
                     l, _, _ = detector.findDistance(lmList1[8],lmList1[4],img) # l define a distância entre os dedos da posição 8 e 12 ; No Draw
-                    print(l)
 
                     # when clicked
-                    if l < 30:
+                    if l < 25:
                         cv2.rectangle(img, button.position, (x + w, y + h), (0,255,0), cv2.FILLED) # Rectangle
                         cv2.putText(img, button.text, (x+10,y+30), 
                                     cv2.FONT_HERSHEY_PLAIN, 2,(255,255,255), 2)
                         final_text += button.text
-                        sleep(0.8)
+                        sleep(0.7)
     # Inserindo o texto na tela
     cv2.rectangle(img, (20, 400), (700,450), (128,0,0), cv2.FILLED) # Rectangle
     cv2.putText(img, final_text, (30,440), 
